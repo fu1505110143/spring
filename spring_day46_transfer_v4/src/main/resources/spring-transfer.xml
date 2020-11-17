@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd ">
+
+
+    <import resource="spring-mybatis.xml"></import>
+
+    <!--
+        spring的声明式事务:
+            1. 配置事务管理者 DatasourceTransactionManager
+            2. 进行事务配置:
+               2.1 声明事务规则(对应的就是代码中的事务模板)
+    -->
+    <!--对事务相关的对象进行IOC-->
+    <bean id="dataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+    <tx:advice id="tx" transaction-manager="dataSourceTransactionManager">
+        <!--事务的规则配置-->
+        <tx:attributes>
+            <!--
+                给哪个方法添加事务规则
+                    rollback-for="java.lang.Exception" 表示遇到所有Exception都回滚
+            -->
+            <tx:method name="update" rollback-for="java.lang.Exception"/>
+        </tx:attributes>
+    </tx:advice>
+</beans>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--
+        每一个实现类就对应一个bean标签
+            id属性: 对象的唯一标识，根据这个唯一标识，就可以从核心容器中获取对象
+            class属性: 对象所属的实现类的全限定名
+            scope属性: 对象的范围
+                 1. singleton 单例（默认）
+                 2. prototype 多例
+            lazy-init: 配置懒加载，核心容器创建的时候是否创建出该类对象
+            init-method: 配置类的对象初始化的时候，要调用哪个方法
+            destroy-method: 配置这个类的对象销毁的时候，要调用哪个方法
+            单例模式下(默认没有开启懒加载)，由核心容器进行管理的对象什么时候创建什么时候销毁?
+            1. 核心容器创建的时候，会创建出它所配置的所有类的对象
+            2. 核心容器销毁的时候，它里面的对象才会被销毁
+
+            多例模式下，由spring管理的对象什么时候创建什么时候销毁
+            1. 当核心容器调用getBean(id)的时候，创建对象
+            2. 垃圾回收机制才能销毁这个对象
+    --><!--
+  配置实例工厂实例化Bean
+  第一步: 配置实例工厂对象
+  第二步: 配置bean对象
+  factory-bean 表示要调用哪个实例工厂对象的方法
+  factory-method 表示要调用实例工厂对象的哪个方法
+-->
+   <bean id="druidUtil" class="com.itheima.utils.DruidUtil"></bean>
+    <bean id="dataSource" factory-bean="druidUtil" factory-method="getDataSource"></bean>
+</beans>

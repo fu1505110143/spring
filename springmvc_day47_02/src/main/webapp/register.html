@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+</head>
+<body>
+<form method="post" action="/user/register">
+    用户名<input type="text" name="username"><br>
+    密码<input type="text" name="password"><br>
+    昵称<input type="text" name="nickname"><br>
+    生日<input type="text" name="birthday"><br>
+    兴趣爱好
+    <input type="checkbox" name="hobbies" value="basketball">篮球
+    <input type="checkbox" name="hobbies" value="football">足球
+    <input type="checkbox" name="hobbies" value="yumaoball">羽毛球
+    <input type="checkbox" name="hobbies" value="pingpangball">乒乓球<br>
+    <input type="submit" value="注册">
+</form>
+<form action="/user/deleteMore" method="post">
+    <input type="checkbox" name="ids" value="1">1<br>
+    <input type="checkbox" name="ids" value="2">2<br>
+    <input type="checkbox" name="ids" value="3">3<br>
+    <input type="checkbox" name="ids" value="4">4<br>
+    <input type="checkbox" name="ids" value="5">5<br>
+    <input type="checkbox" name="ids" value="6">6<br>
+    <input type="submit" value="删除">
+</form>
+</body>
+</html>

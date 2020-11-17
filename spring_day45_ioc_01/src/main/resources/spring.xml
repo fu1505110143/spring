@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+    <!--
+        每一个实现类就对应一个bean标签
+            id属性: 对象的唯一标识，根据这个唯一标识，就可以从核心容器中获取对象
+            class属性: 对象所属的实现类的全限定名
+            scope属性: 对象的范围
+                 1. singleton 单例（默认）
+                 2. prototype 多例
+            lazy-init: 配置懒加载，核心容器创建的时候是否创建出该类对象
+            init-method: 配置类的对象初始化的时候，要调用哪个方法
+            destroy-method: 配置这个类的对象销毁的时候，要调用哪个方法
+            单例模式下(默认没有开启懒加载)，由核心容器进行管理的对象什么时候创建什么时候销毁?
+            1. 核心容器创建的时候，会创建出它所配置的所有类的对象
+            2. 核心容器销毁的时候，它里面的对象才会被销毁
+
+            多例模式下，由spring管理的对象什么时候创建什么时候销毁
+            1. 当核心容器调用getBean(id)的时候，创建对象
+            2. 垃圾回收机制才能销毁这个对象
+    --> <!--
+        它里面的UserService属性要进行赋值
+            第一种:使用有参构造进行属性的注入,使用<constructor-arg>标签注入
+            第二种:使用set方法进行属性的注入
+            第三种:p命名空间的方式注入
+        要注入的属性类型:
+            1. 对象(spring核心容器中的)类型: ref="对象的id"
+            2. 简单类型: String、int、Integer: value="要注入的数据"
+
+    -->
+    <bean id="userService" class="com.itheima.service.impl.UserServiceImpl" p:age="19" p:userDao-ref="userDao">
+        <!--<constructor-arg name="userDao" ref="userDao"></constructor-arg>-->
+        <!--<property name="age" value="19"></property>-->
+    </bean>
+    <bean id="userDao" class="com.itheima.dao.impl.UserDaoImpl"></bean>
+</beans>

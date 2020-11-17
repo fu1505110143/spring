@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+         <!--进行aop配置-->
+         <!--目标1: 在执行增删改查方法之前，都加入权限校验-->
+         <!--1. 切入点是: UserServiceImpl中的所有方法-->
+         <!--2. 通知是: MyAspect中的checkPermission方法-->
+         <!--3. 通知的类型是: 前置通知-->
+         <!--4. 切面是: MyAspect类的对象-->
+         <!--目标2: 在执行完所有的方法之后都获取方法的返回值，并且进行日志打印 "方法执行完毕...，返回值为:"-->
+         <!--1. 切入点是: UserServiceImpl中的所有方法-->
+         <!--2. 通知是: MyAspect中的printResult方法-->
+         <!--3. 通知的类型是: 后置通知-->
+         <!--4. 切面是: MyAspect类的对象-->
+         <!--目标3: 在执行所有方法出现异常之后,将异常信息写入到本地文件中-->
+         <!--1. 切入点是: UserServiceImpl中的所有方法-->
+         <!--2. 通知是: MyAspect中的printError方法-->
+         <!--3. 通知的类型是: 异常通知-->
+         <!--4. 切面是: MyAspect类的对象-->
+         <!--目标4: 在执行所有方法之后，无论是否出现异常，均执行 "资源回收的操作......"-->
+         <!--1.切入点是: UserServiceImpl中的所有方法-->
+         <!--2. 通知是:  MyAspect中的close方法-->
+         <!--3. 通知的类型是: 最终通知-->
+         <!--4. 切面是: MyAspect类的对象-->
+         <!--目标5: 在执行query()方法的过程中，统计执行时间-->
+         <!--1. 切入点是: UserServiceImpl中的query方法-->
+         <!--2. 通知是:  MyAspect中的totalTime方法-->
+         <!--3. 通知的类型是: 环绕通知-->
+         <!--4. 切面是: MyAspect类的对象-->
+    <context:component-scan base-package="com.alibaba"></context:component-scan>
+    <aop:config>
+        <!--expression 切入点表达式 设置切入点-->
+        <aop:pointcut id="pt1" expression="execution(* com.alibaba.service.impl.UserServiceImpl.*(..))"/>
+        <aop:pointcut id="pt2" expression="execution(String com.alibaba.service.impl.UserServiceImpl.query())"/>
+        <!--设置切面-->
+        <aop:aspect id="myAspect" ref="myAspect">
+            <!--设置通知-->
+            <!--前置通知-->
+            <aop:before  method="checkPermission" pointcut-ref="pt1"></aop:before>
+            <!--后置通知-->
+            <aop:after-returning  returning="result" method="printRuselt" pointcut-ref="pt2"></aop:after-returning>
+            <!--异常通知-->
+            <aop:after-throwing throwing="errorMsg" method="printError" pointcut-ref="pt1"></aop:after-throwing>
+            <!--最终通知-->
+            <aop:after method="close" pointcut-ref="pt1"></aop:after>
+            <!--环绕通知-->
+            <aop:around  method="totalTime" pointcut-ref="pt2"></aop:around>
+        </aop:aspect>
+    </aop:config>
+</beans>

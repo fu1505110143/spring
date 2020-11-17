@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加</title>
+    <script src="js/axios-0.18.0.js"></script>
+    <script src="js/vuejs-2.5.16.js"></script>
+</head>
+<body>
+       <div id="app">
+           <form onsubmit="return false">
+          用户<input type="text" name="name" v-model="account.name">
+           金额<input type="text" name="money" v-model="account.money">
+           <input type="submit" value="添加" @click="addAccount()">
+           </form>
+       </div>
+<script>
+    var vue = new Vue({
+        el:"#app",
+        data:{
+            account:{},
+        },
+        methods:{
+            addAccount(){
+                let param=this.account
+                axios.post("/account/addAccount",param).then(response=>{
+                    if(response.data.flag){
+                        location.href="/success.html"
+                    }
+                })
+            }
+        }
+    });
+</script>
+</body>
+</html>
